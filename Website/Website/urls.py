@@ -17,9 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from signup.views import signup_action,home_page
 from login.views import login_action
+
+from django.views.static import serve
+from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/',signup_action),
     path('login/',login_action),
-    path('',home_page)
-]
+    path('',home_page),
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
